@@ -3,7 +3,7 @@ using DevInSales.Context;
 
 
 using DevInSales.Seeds;
-
+using DevInSales.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -22,7 +22,9 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 builder.Services.AddDbContext<SqlContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("ServerConnection")));
-builder.Services.AddControllersWithViews().AddNewtonsoftJson(); 
+builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
