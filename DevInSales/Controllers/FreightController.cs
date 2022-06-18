@@ -1,6 +1,7 @@
 ﻿using DevInSales.Context;
 using DevInSales.DTOs;
 using DevInSales.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ namespace DevInSales.Controllers
 {
     [Route("api/freight")]
     [ApiController]
+    [Authorize]
     public class FreightController : ControllerBase
     {
         private readonly SqlContext _context;

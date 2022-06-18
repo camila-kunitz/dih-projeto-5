@@ -9,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using DevInSales.Context;
 using DevInSales.Models;
 using DevInSales.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevInSales.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StateController : ControllerBase
     {
         private readonly SqlContext _context;

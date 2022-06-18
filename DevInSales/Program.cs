@@ -5,7 +5,9 @@ using DevInSales.Context;
 using DevInSales.Seeds;
 using DevInSales.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,23 @@ builder.Services.AddDbContext<SqlContext>(options=>options.UseSqlServer(builder.
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
+        };
+    }
+);
 
 var app = builder.Build();
 
@@ -36,6 +55,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -10,12 +10,13 @@ using DevInSales.Context;
 using DevInSales.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using DevInSales.DTOs;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevInSales.Controllers
 {
     [Route("api/address")]
     [ApiController]
+    [Authorize]
     public class AddressController : ControllerBase
     {
         private readonly SqlContext _context;
