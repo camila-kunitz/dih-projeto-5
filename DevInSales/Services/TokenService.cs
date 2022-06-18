@@ -21,9 +21,9 @@ namespace DevInSales.Services
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claimsForToken = new List<Claim>();
-            claimsForToken.Add(new Claim("sub", user.Id.ToString()));
-            claimsForToken.Add(new Claim("user_name", user.Name));
-            claimsForToken.Add(new Claim("email", user.Email));
+            claimsForToken.Add(new Claim(ClaimTypes.Name, user.Name));
+            claimsForToken.Add(new Claim(ClaimTypes.Email, user.Email));
+            claimsForToken.Add(new Claim(ClaimTypes.Role, user.Profile.Name));
 
             var jwtSecurityToken = new JwtSecurityToken(
                 _configuration["Authentication:Issuer"],
