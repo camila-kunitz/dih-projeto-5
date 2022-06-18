@@ -57,6 +57,10 @@ public class SqlContext : DbContext
 
         modelBuilder.Entity<CityPrice>().HasData(CityPriceSeed.Seed);
 
+        modelBuilder.Entity<Profile>().HasData(AuthorizationProfileSeed.Seed);
+
+        modelBuilder.Entity<User>().HasData(AuthorizationUsersSeed.Seed);
+
 
         var order_product = modelBuilder.Entity<OrderProduct>();
         order_product.HasKey(x => x.Id);
