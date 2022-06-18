@@ -1,5 +1,6 @@
 ﻿using DevInSales.Context;
 using DevInSales.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace DevInSales.Controllers
 {
     [Route("api/delivery")]
     [ApiController]
+    [Authorize]
     public class DeliveryController : ControllerBase
     {
 
