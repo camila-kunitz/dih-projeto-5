@@ -28,10 +28,11 @@ namespace DevInSales.Controllers
         /// <response code="200">Registro encontrado.</response>
         /// <response code="404">Registro não encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante a consulta</response>
-        [HttpGet("user/{user_id}/order")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet("user/{user_id}/order")]
+        [Authorize(Roles = "Administrador, Gerente, Usuário")]
         public async Task<ActionResult<ICollection<Order>>> GetUserId(int user_id)
         {
             try
@@ -59,10 +60,11 @@ namespace DevInSales.Controllers
         /// <response code="200"></response>
         /// <response code="404"></response>
         /// <response code="500"></response>
-        [HttpGet("user/{user_id}/buy")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet("user/{user_id}/buy")]
+        [Authorize(Roles = "Administrador, Gerente, Usuário")]
         public async Task<ActionResult<ICollection<Order>>> GetBuyId(int user_id)
         {
             try
@@ -94,11 +96,12 @@ namespace DevInSales.Controllers
         /// <response code="400">Requisição incorreta.</response>
         /// <response code="404">Registro não encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante a consulta</response>
-        [HttpPatch("{order_id}/product/{product_id}/price/{price}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPatch("{order_id}/product/{product_id}/price/{price}")]
+        [Authorize(Roles = "Administrador, Gerente")]
         public async Task<ActionResult> PatchPrice(int order_id, int orderProduct_id, decimal price)
         {
 
@@ -133,11 +136,12 @@ namespace DevInSales.Controllers
         /// <response code="400">Requisição incorreta.</response>
         /// <response code="404">Registro não encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante a consulta</response>
-        [HttpPatch("{order_id}/product/{product_id}/amount/{amount}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPatch("{order_id}/product/{product_id}/amount/{amount}")]
+        [Authorize(Roles = "Administrador, Gerente")]
         public async Task<ActionResult> PatchAmount(int order_id, int orderProduct_id, int amount)
         {
            
@@ -171,10 +175,11 @@ namespace DevInSales.Controllers
         /// <response code="400">Requisição incorreta.</response>
         /// <response code="404">Registro não encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante a consulta</response>
-        [HttpGet("order/{order_id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet("order/{order_id}")]
+        [Authorize(Roles = "Administrador, Gerente, Usuário")]
         public async Task<ActionResult<Order>> GetOrderId(int orderProduct_id)
         {
             try
@@ -202,10 +207,11 @@ namespace DevInSales.Controllers
         /// <response code="400">Requisição incorreta.</response>
         /// <response code="404">Registro não encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante a consulta</response>
-        [HttpPost("/user/{user_id}/order")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPost("/user/{user_id}/order")]
+        [Authorize(Roles = "Administrador, Gerente")]
         public async Task<ActionResult<Order>> PostOrder(OrderCreateDTO order, int city_id)
         {
             if(order.SellerId == 0) { return BadRequest(); }
@@ -257,12 +263,12 @@ namespace DevInSales.Controllers
         /// <response code="400">Requisição incorreta.</response>
         /// <response code="404">Registro não encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante a consulta</response>
-        [HttpPost("order/{order_id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
+        [HttpPost("order/{order_id}")]
+        [Authorize(Roles = "Administrador, Gerente")]
         public async Task<ActionResult<OrderProduct>> PostOrderProduct (int order_id, [FromBody] OrderProductCreateDTO orderProductDTO)
         {
             try

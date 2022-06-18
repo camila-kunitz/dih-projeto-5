@@ -33,10 +33,11 @@ namespace DevInSales.Controllers
         /// <response code="200">Retorno da lista de produto(s) consultado(s).</response>
         /// <response code="204">Sem nenhum retorno.</response>
         /// <response code="400">Erro ao fazer a Request.</response>
-        [HttpGet(Name = "GetProduct")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet(Name = "GetProduct")]
+        [Authorize(Roles = "Administrador, Gerente, Usuário")]
         public async Task<ActionResult<IEnumerable<ProductGetDTO>>> GetProduct(string? name, decimal? price_min, decimal? price_max)
         {
             if (price_max < price_min)
@@ -74,11 +75,12 @@ namespace DevInSales.Controllers
         /// <response code="400">Produto com mesmo nome já cadastrado, ou preço sugerido menor ou igual à 0.</response>
         /// <response code="404">Produto não encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante o cadastro.</response>
-        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPost]
+        [Authorize(Roles = "Administrador, Gerente")]
         public async Task<ActionResult<Product>> PostProduct([FromBody] ProductPostAndPutDTO product)
         {
             bool productNameExists = _sqlContext.Product.Any(x => x.Name == product.Name);
@@ -106,11 +108,12 @@ namespace DevInSales.Controllers
         /// <response code="404">Id do Produto não foi encontrado.</response>
         /// <response code="500">Ocorreu uma exceção durante a atualização.</response>
         /// <returns></returns>
-        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador, Gerente")]
         public async Task<ActionResult<Product>> PutProduct(int id, ProductPostAndPutDTO product)
         {
             bool productIdExists = _sqlContext.Product.Any(x => x.Id == id);
@@ -164,13 +167,13 @@ namespace DevInSales.Controllers
         /// <response code="204">Sem nenhum retorno.</response>
         /// <response code="400">Erro ao fazer a Request.</response>
         /// <response code="404">produto inexistente</response>
-
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Administrador, Gerente")]
         public async Task<ActionResult<Product>> PatchProduct(int id, ProductPatchDTO productModel)
         {
             var product = await _sqlContext.Product.FindAsync(id);
@@ -224,10 +227,11 @@ namespace DevInSales.Controllers
         /// <response code="204">Produto deletado.</response>
         /// <response code="400">Produto com Ordem de Produto Vinculada.</response>
         /// <response code="404">Produto não encontrado.</response>
-        [HttpDelete("{product_id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpDelete("{product_id}")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteProduct([FromRoute] int product_id)
         {
             var productIdEncontrado = await _sqlContext.Product.FindAsync(product_id);
